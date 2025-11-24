@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soft Romance Aesthetic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- Variáveis de Estilo Soft --- */
+        :root {
+            --rosa-claro: #ffe6ea;
+            --rosa-medio: #ffc2d1;
+            --rosa-escuro: #ff8fa3;
+            --texto: #8b5e66;
+            --vidro: rgba(255, 255, 255, 0.35);
+            --vidro-borda: rgba(255, 255, 255, 0.6);
+            --sombra: 0 8px 32px 0 rgba(255, 143, 163, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #fff0f3 0%, #ffe6ea 100%);
+            min-height: 100vh;
+            color: var(--texto);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- Fundo de Partículas --- */
+        .particles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            color: #ffb3c1;
+            font-size: 1.2rem;
+            animation: floatUp linear infinite;
+            opacity: 0.6;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- TELA 1: A Fuga (Intro) --- */
+        #intro-screen {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+            transition: opacity 1s ease, visibility 1s;
+        }
+
+        .flee-box {
+            background: var(--vidro);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 30px 50px;
+            border-radius: 50px;
+            border: 2px solid var(--vidro-borda);
+            box-shadow: var(--sombra);
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--rosa-escuro);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            user-select: none;
+            text-align: center;
+            position: absolute; /* Importante para movermos */
+        }
+
+        /* --- TELA 2: Site Principal --- */
+        #main-content {
+            display: none; /* Escondido inicialmente */
+            opacity: 0;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            z-index: 5;
+            transition: opacity 1.5s ease;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            color: var(--rosa-escuro);
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(255, 182, 193, 0.4);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 50px;
+            letter-spacing: 2px;
+            opacity: 0.8;
+        }
+
+        /* --- Galeria Glassmorphism --- */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 25px;
+            padding: 15px;
+            box-shadow: var(--sombra);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            opacity: 0; /* Fade-in via JS */
+            transform: translateY(20px);
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 143, 163, 0.3);
+            border-color: #fff;
+        }
+
+        .card img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 20px;
+            display: block;
+        }
+
+        /* --- Botão de Mensagens --- */
+        .btn-love {
+            background: linear-gradient(45deg, var(--rosa-medio), var(--rosa-escuro));
+            border: none;
+            padding: 18px 45px;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.2rem;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 143, 163, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-love:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 35px rgba(255, 143, 163, 0.6);
+        }
+
+        #message-box {
+            margin-top: 30px;
+            min-height: 40px;
+            font-size: 1.4rem;
+            color: var(--rosa-escuro);
+            font-family: 'Dancing Script', cursive;
+            transition: opacity 0.5s;
+            opacity: 0;
+        }
+
+        /* Ajustes Mobile */
+        @media (max-width: 600px) {
+            h1 { font-size: 3rem; }
+            .flee-box { padding: 20px 30px; font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="particles" id="particles-js"></div>
+
+    <div id="intro-screen">
+        <div id="flee-btn" class="flee-box">⤷ clique aqui para entrar ୭</div>
+    </div>
+
+    <div id="main-content">
+        <header>
+            <h1>bem-vindo ao nosso mundo</h1>
+            <p class="subtitle">soft • sweet • love</p>
+        </header>
+
+        <div class="gallery">
+            <div class="card"><img src="https://i.pinimg.com/736x/f0/a3/96/f0a396e006e95914caebdee67fb0bcbd.jpg" alt="Soft Photo 1"></div>
+            <div class="card"><img src="https://i.pinimg.com/736x/b4/2a/2d/b42a2dd751e2bd8ab25591e0cdcfc807.jpg" alt="Soft Photo 2"></div>
+            <div class="card"><img src="https://i.pinimg.com/736x/51/f5/9d/51f59d6a7fe59ba95006f9a8acf036c2.jpg" alt="Soft Photo 3"></div>
+            <div class="card"><img src="https://i.pinimg.com/736x/7d/37/5b/7d375b419a8a778034785fb14fe03b25.jpg" alt="Soft Photo 4"></div>
+            <div class="card"><img src="https://i.pinimg.com/736x/7d/37/5b/7d375b419a8a778034785fb14fe03b25.jpg" alt="Soft Photo 5"></div>
+            <div class="card"><img src="https://i.pinimg.com/736x/7d/37/5b/7d375b419a8a778034785fb14fe03b25.jpg" alt="Soft Photo 6"></div>
+        </div>
+
+        <div class="interactions">
+            <button class="btn-love" onclick="mostrarAmor()">Receba um carinho ૮₍ ´ ꒳ `₎ა</button>
+            <div id="message-box"></div>
+        </div>
+        
+        <br><br><br>
+    </div>
+
+    <script>
+        /* --- 1. Lógica da Caixa Fugitiva --- */
+        const fleeBtn = document.getElementById('flee-btn');
+        const introScreen = document.getElementById('intro-screen');
+        const mainContent = document.getElementById('main-content');
+        let escapes = 0;
+        const maxEscapes = 6;
+
+        // Tentar clicar ou passar o mouse faz o botão fugir
+        fleeBtn.addEventListener('mouseover', tentarClicar);
+        fleeBtn.addEventListener('touchstart', tentarClicar); // Para telemóvel
+        fleeBtn.addEventListener('click', finalizarJogo);
+
+        function tentarClicar(e) {
+            if (escapes < maxEscapes) {
+                e.preventDefault(); // Evita clique real se ainda não for a hora
+                moverBotao();
+                escapes++;
+            } else {
+                // Prepara o botão para ser clicável
+                fleeBtn.style.backgroundColor = "#ffc2d1";
+                fleeBtn.style.color = "#fff";
+                fleeBtn.innerHTML = "pode entrar agora ദ്ദി◝ ⩊ ◜.ᐟ❤️";
+                // Remove os eventos de fuga
+                fleeBtn.removeEventListener('mouseover', tentarClicar);
+                fleeBtn.removeEventListener('touchstart', tentarClicar);
+            }
+        }
+
+        function moverBotao() {
+            // Calcula uma posição aleatória dentro da janela visível
+            // window.innerWidth - largura do botão (para não sair da tela)
+            const x = Math.random() * (window.innerWidth - fleeBtn.offsetWidth - 40);
+            const y = Math.random() * (window.innerHeight - fleeBtn.offsetHeight - 40);
+            
+            fleeBtn.style.left = `${x}px`;
+            fleeBtn.style.top = `${y}px`;
+            // Se estava centralizado antes, agora precisa ser absolute no body ou container relativo
+            // O CSS já garante position: absolute
+        }
+
+        function finalizarJogo() {
+            if (escapes >= maxEscapes) {
+                // Transição de Entrada
+                introScreen.style.opacity = '0';
+                setTimeout(() => {
+                    introScreen.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    
+                    // Pequeno delay para permitir o display block processar antes da opacidade
+                    setTimeout(() => {
+                        mainContent.style.opacity = '1';
+                        animarGaleria();
+                    }, 50);
+                }, 1000);
+            }
+        }
+
+        /* --- 2. Animação da Galeria (Fade-in um por um) --- */
+        function animarGaleria() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('visible');
+                }, index * 200); // 200ms de atraso entre cada foto
+            });
+        }
+
+        /* --- 3. Frases Românticas --- */
+        const mensagens = [
+            "Você ilumina meus dias ✨",
+            "Eu te amo infinitamente 💖",
+            "Sua alma é a coisa mais linda",
+            "Obrigado por existir 🌸",
+            "Você é meu lugar seguro",
+            "Aesthetic feelings only for you ☁️"
+        ];
+
+        function mostrarAmor() {
+            const msgBox = document.getElementById('message-box');
+            msgBox.style.opacity = 0;
+            
+            setTimeout(() => {
+                const texto = mensagens[Math.floor(Math.random() * mensagens.length)];
+                msgBox.innerHTML = texto;
+                msgBox.style.opacity = 1;
+            }, 300);
+        }
+
+        /* --- 4. Gerar Partículas (Coraçõezinhos) --- */
+        function criarParticulas() {
+            const container = document.getElementById('particles-js');
+            const heart = document.createElement('div');
+            heart.classList.add('particle');
+            heart.innerHTML = Math.random() > 0.5 ? '❤' : '✨';
+            
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            
+            container.appendChild(heart);
+            
+            setTimeout(() => { heart.remove(); }, 10000);
+        }
+        setInterval(criarParticulas, 400);
+
+    </script>
+</body>
+</html>
